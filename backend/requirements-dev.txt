@@ -1,0 +1,5 @@
+pytest
+httpx               # Para testes de endpoints FastAPI
+pytest-cov          # Cobertura de testes
+ruff                # Linter rápido
+pre-commit          # Ganchos para lint e format
