@@ -17,7 +17,7 @@ router = APIRouter()
 router.include_router(health.router, prefix=v1_prefix)
 
 
-@router.post("/api/upload")
+@router.post("/api/v1/upload")
 async def upload_api_doc(file: UploadFile = File(...)):
     ext = file.filename.split(".")[-1].lower()
     if ext not in ["json", "yaml", "yml"]:

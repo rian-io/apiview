@@ -21,4 +21,4 @@ init_db()
 app.include_router(router)
 
 # Servir arquivos enviados
-app.mount("/api/uploads", StaticFiles(directory="app/uploads"), name="uploads")
+app.mount("/api/v1/uploads", StaticFiles(directory="app/uploads"), name="uploads")

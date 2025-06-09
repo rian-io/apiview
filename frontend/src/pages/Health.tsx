@@ -4,7 +4,7 @@ export default function Health() {
     const [status, setStatus] = useState<'checking' | 'ok' | 'fail'>('checking');
 
     useEffect(() => {
-        fetch('/api/v1/health')
+        fetch('api/v1/health')
             .then(res => res.ok ? setStatus('ok') : setStatus('fail'))
             .catch(() => setStatus('fail'));
     }, []);
