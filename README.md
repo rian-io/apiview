@@ -1,107 +1,148 @@
-# API Visualizer
+# 📘 API DocGen – API Documentation Generator
 
-A tool to visualize and test APIs from OpenAPI specifications.
+A SaaS tool to automatically and visually generate API documentation from JSON/YAML OpenAPI specs, with an integrated playground and local storage.
 
-## Project Structure
+---
+
+## 🧱 Stack
+
+- **Backend**: [FastAPI](https://fastapi.tiangolo.com/)
+- **Frontend**: [React 19](https://react.dev/) + [TailwindCSS](https://tailwindcss.com/)
+- **Bundler**: [Vite](https://vitejs.dev/)
+- **Linter**: [Ruff](https://docs.astral.sh/ruff/), [ESLint](https://eslint.org/)
+- **Formatter**: [Black](https://black.readthedocs.io/)
+- **Hooks**: [pre-commit](https://pre-commit.com/)
+- **Tests**: [Pytest](https://docs.pytest.org/)
+- **Environment Management**: Conda (env `web`)
+
+---
+
+## 📁 Project Structure
 
 ```
-backend/
-  app/
-    main.py
-    ...
-  requirements.txt
-  requirements-dev.txt
-  ...
-frontend/
-  src/
-    ...
-  package.json
-  ...
+apiview/
+├── backend/
+│   ├── app/
+│   │   ├── main.py
+│   │   └── ...
+│   ├── requirements.txt
+│   └── requirements-dev.txt
+├── frontend/
+│   ├── index.html
+│   ├── tailwind.config.js
+│   ├── package.json
+│   └── src/
+├── Makefile
+└── README.md
 ```
 
 ---
 
-## Backend
+## 🚀 Getting Started Locally
 
-- **Framework:** FastAPI
-- **Database:** SQLite (default: `db.sqlite3`)
-- **Static uploads:** Served from `/api/uploads`
+### 🔧 Prerequisites
 
-### Setup
+- Python 3.10+
+- Conda
+- Node.js 18+
+- pnpm
 
-1. **Install dependencies:**
+### 🐍 Backend (FastAPI)
 
-   ```sh
-   cd backend
-   python -m venv venv
-   source venv/bin/activate
-   pip install -r requirements.txt
+1. Create the environment:
+
+   ```bash
+   conda create -n web python=3.10
+   conda activate web
    ```
 
-2. **Run the server:**
+2. Install dependencies:
 
-   ```sh
-   uvicorn app.main:app --reload
+   ```bash
+   make install
    ```
 
-3. **Testing & Linting:**
-   - Run tests:
+3. Start the backend:
 
-     ```sh
-     pytest
-     ```
+   ```bash
+   make run-backend
+   ```
 
-   - Lint & format:
+4. Run tests and linting:
 
-     ```sh
-     ruff .
-     ```
+   ```bash
+   make test
+   make lint
+   ```
 
----
+### ⚛️ Frontend (React + Vite)
 
-## Frontend
+1. Install dependencies:
 
-- **Framework:** React 19 + TypeScript
-- **Bundler:** Vite
-- **Styling:** Tailwind CSS
-
-### Setup
-
-1. **Install dependencies:**
-
-   ```sh
+   ```bash
    cd frontend
    pnpm install
    ```
 
-2. **Run the development server:**
+2. Run the dev server:
 
-   ```sh
+   ```bash
    pnpm dev
    ```
 
-3. **Build for production:**
+3. Build for production:
 
-   ```sh
+   ```bash
    pnpm build
    ```
 
-4. **Lint:**
+4. Lint:
 
-   ```sh
+   ```bash
    pnpm lint
    ```
 
 ---
 
-## Development Notes
+## 🔄 Unified Dev Command
 
-- Uploaded files are stored in `backend/app/uploads` and served at `/api/uploads`.
-- The backend database is initialized automatically on startup.
-- ESLint and Ruff are configured for code quality in frontend and backend, respectively.
+To run both frontend and backend together:
+
+```bash
+make dev
+```
+
+Make sure you’ve run `make install` first and your Conda environment (`web`) is activated or accessible.
 
 ---
 
-## License
+## 🧪 Tests & Quality
 
-MIT
+- **Backend**: Pytest + Ruff + Black + pre-commit
+- **Frontend**: ESLint + TypeScript checks + Tailwind CSS
+
+Install pre-commit hooks:
+
+```bash
+pre-commit install
+pre-commit run --all-files
+```
+
+---
+
+## 📦 Production
+
+- Backend: Serve via Uvicorn/Gunicorn or container
+- Frontend: Static files in `frontend/dist/`
+
+---
+
+## 📌 Status
+
+🚧 MVP in development. JSON/YAML OpenAPI file upload and interactive doc viewer underway.
+
+---
+
+## 📄 License
+
+MIT © [Your Name](https://github.com/your-user)
