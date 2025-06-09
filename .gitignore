@@ -23,6 +23,7 @@ instance/
 *.egg-info/
 build/
 dist/
+app/uploads/
 
 # Node / React / Vite / Tailwind / TypeScript
 node_modules/
