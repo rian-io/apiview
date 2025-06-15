@@ -1,19 +1,16 @@
 # 📘 API DocGen – API Documentation Generator
 
-A SaaS tool to automatically and visually generate API documentation from JSON/YAML OpenAPI specs, with an integrated playground and local storage.
+A SaaS tool to visually generate and host documentation from JSON/YAML OpenAPI specs. Built with FastAPI, React 19, and TailwindCSS. Optimized for solo developers and monorepo projects.
 
 ---
 
-## 🧱 Stack
+## 🧱 Tech Stack
 
-- **Backend**: [FastAPI](https://fastapi.tiangolo.com/)
-- **Frontend**: [React 19](https://react.dev/) + [TailwindCSS](https://tailwindcss.com/)
-- **Bundler**: [Vite](https://vitejs.dev/)
-- **Linter**: [Ruff](https://docs.astral.sh/ruff/), [ESLint](https://eslint.org/)
-- **Formatter**: [Black](https://black.readthedocs.io/)
-- **Hooks**: [pre-commit](https://pre-commit.com/)
-- **Tests**: [Pytest](https://docs.pytest.org/)
-- **Environment Management**: Conda (env `web`)
+- **Backend**: FastAPI, Uvicorn, SQLite
+- **Frontend**: React 19 + Vite + TailwindCSS
+- **Environment**: Conda (`web`)
+- **Dev Tools**: pnpm, Ruff, Black, Pytest, pre-commit
+- **Project Layout**: Monorepo
 
 ---
 
@@ -24,104 +21,100 @@ apiview/
 ├── backend/
 │   ├── app/
 │   │   ├── main.py
-│   │   └── ...
+│   │   └── api/, models/
 │   ├── requirements.txt
-│   └── requirements-dev.txt
+│   ├── requirements-dev.txt
+│   └── tests/
 ├── frontend/
-│   ├── index.html
-│   ├── tailwind.config.js
+│   ├── src/
 │   ├── package.json
-│   └── src/
+│   ├── vite.config.ts
+│   └── tailwind.config.js
 ├── Makefile
 └── README.md
 ```
 
 ---
 
-## 🚀 Getting Started Locally
+## 🚀 Getting Started
 
 ### 🔧 Prerequisites
 
-- Python 3.10+
-- Conda
+- Python 3.10+ and Conda
 - Node.js 18+
-- pnpm
-
-### 🐍 Backend (FastAPI)
-
-1. Create the environment:
-
-   ```bash
-   conda create -n web python=3.10
-   conda activate web
-   ```
-
-2. Install dependencies:
-
-   ```bash
-   make install
-   ```
-
-3. Start the backend:
-
-   ```bash
-   make run-backend
-   ```
-
-4. Run tests and linting:
-
-   ```bash
-   make test
-   make lint
-   ```
-
-### ⚛️ Frontend (React + Vite)
-
-1. Install dependencies:
-
-   ```bash
-   cd frontend
-   pnpm install
-   ```
-
-2. Run the dev server:
-
-   ```bash
-   pnpm dev
-   ```
-
-3. Build for production:
-
-   ```bash
-   pnpm build
-   ```
-
-4. Lint:
-
-   ```bash
-   pnpm lint
-   ```
+- pnpm (`npm i -g pnpm`)
 
 ---
 
-## 🔄 Unified Dev Command
+### ✅ Setup
 
-To run both frontend and backend together:
+1. Clone the repo:
+
+```bash
+git clone https://github.com/your-user/api-docgen.git
+cd api-docgen
+```
+
+2. Create and activate the Conda environment:
+
+```bash
+conda create -n web python=3.10
+conda activate web
+```
+
+3. Install all dependencies (backend and frontend):
+
+```bash
+make install
+```
+
+---
+
+### 🧪 Development
+
+To run both backend and frontend in dev mode:
 
 ```bash
 make dev
 ```
 
-Make sure you’ve run `make install` first and your Conda environment (`web`) is activated or accessible.
+- Backend: <http://localhost:8000>
+- Frontend: <http://localhost:5173>
+
+You can also run them separately:
+
+```bash
+make run-backend
+make run-frontend
+```
 
 ---
 
-## 🧪 Tests & Quality
+## 🧪 Testing & Code Quality
 
-- **Backend**: Pytest + Ruff + Black + pre-commit
-- **Frontend**: ESLint + TypeScript checks + Tailwind CSS
+- **Run tests** (Pytest):
 
-Install pre-commit hooks:
+  ```bash
+  make test
+  ```
+
+- **Lint backend** (Ruff):
+
+  ```bash
+  make lint
+  ```
+
+- **Format code** (Black):
+
+  ```bash
+  make format
+  ```
+
+---
+
+### 🪝 Pre-commit Hooks
+
+Install pre-commit hooks to auto-format and lint before commits:
 
 ```bash
 pre-commit install
@@ -130,19 +123,35 @@ pre-commit run --all-files
 
 ---
 
-## 📦 Production
+## 🏗️ Building Frontend
 
-- Backend: Serve via Uvicorn/Gunicorn or container
-- Frontend: Static files in `frontend/dist/`
+To build the frontend for production:
+
+```bash
+cd frontend
+pnpm build
+```
+
+Static files will be in `frontend/dist`.
+
+---
+
+## 🧹 Cleaning
+
+Remove cache and Python bytecode:
+
+```bash
+make clean
+```
 
 ---
 
 ## 📌 Status
 
-🚧 MVP in development. JSON/YAML OpenAPI file upload and interactive doc viewer underway.
+🚧 MVP in development: file upload, spec parsing, live preview & public sharing.
 
 ---
 
 ## 📄 License
 
-MIT © [Your Name](https://github.com/your-user)
+MIT © [Rian I. de Oliveira](https://github.com/rian-io)
