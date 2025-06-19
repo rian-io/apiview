@@ -2,12 +2,15 @@ import Foundation
 
 struct OpenAPIService {
     static func extractEndpoints(from spec: [String: Any]) -> [String: Any] {
-        let info: [String: String] = [
-            "title": (spec["info"] as? [String: Any])?["title"] as? String ?? "Unknown API",
-            "version": (spec["info"] as? [String: Any])?["version"] as? String ?? "Unknown",
-            "description": (spec["info"] as? [String: Any])?["description"] as? String ?? "",
-        ]
-        var endpoints: [[String: Any]] = []
+        // Extract info
+        let infoDict = spec["info"] as? [String: Any] ?? [:]
+        let info = ApiInfo(
+            title: infoDict["title"] as? String,
+            version: infoDict["version"] as? String,
+            description: infoDict["description"] as? String
+        )
+        // Extract endpoints
+        var endpoints: [Endpoint] = []
         guard let paths = spec["paths"] as? [String: Any] else {
             return ["info": info, "endpoints": endpoints]
         }
@@ -18,18 +21,17 @@ struct OpenAPIService {
                 if validMethods.contains(method.lowercased()),
                     let operationDict = operation as? [String: Any]
                 {
-                    var endpoint: [String: Any] = [
-                        "path": path,
-                        "method": method.uppercased(),
-                        "summary": operationDict["summary"] as? String ?? "",
-                        "description": operationDict["description"] as? String ?? "",
-                        "operationId": operationDict["operationId"] as? String ?? "",
-                        "parameters": operationDict["parameters"] as? [[String: Any]] ?? [],
-                        "responses": operationDict["responses"] as? [String: Any] ?? [:],
-                    ]
-                    if let requestBody = operationDict["requestBody"] {
-                        endpoint["requestBody"] = requestBody
-                    }
+                    let endpoint = Endpoint(
+                        path: path,
+                        method: HttpMethod(rawValue: method.uppercased()) ?? .GET,
+                        summary: operationDict["summary"] as? String,
+                        description: operationDict["description"] as? String,
+                        operationId: operationDict["operationId"] as? String,
+                        parameters: nil,  // You can add parameter parsing here
+                        requestBody: nil,  // You can add requestBody parsing here
+                        responses: nil,  // You can add responses parsing here
+                        tags: operationDict["tags"] as? [String]
+                    )
                     endpoints.append(endpoint)
                 }
             }

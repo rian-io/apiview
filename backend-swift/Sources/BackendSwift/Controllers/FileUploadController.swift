@@ -8,7 +8,7 @@ struct FileUploadController: RouteCollection {
     }
 
     @Sendable
-    func upload(req: Request) async throws -> [String: String] {
+    func upload(req: Request) async throws -> ProcessedFileData {
         // Ensure the request contains a file upload
         guard req.content.contentType == .formData else {
             throw Abort(.badRequest, reason: "Content type must be multipart/form-data")
@@ -35,12 +35,23 @@ struct FileUploadController: RouteCollection {
         try saveFile(file, to: savePath)
         try await saveDocument(filename: filename, filetype: ext, slug: slug, req: req)
         let extracted = try extractInfoAndEndpoints(from: savePath)
-        return [
-            "slug": slug,
-            "url": "api/uploads/" + slug,
-            "info": String(describing: extracted["info"] ?? [:]),
-            "endpoints": String(describing: extracted["endpoints"] ?? []),
-        ]
+
+        req.logger.info("File \(filename) uploaded and processed successfully.")
+
+        req.logger.info("Info -- \(extracted["info"]!).")
+
+        let apiInfo = extracted["info"] as? ApiInfo ?? ApiInfo(title: "Unknown", version: "1.0")
+
+        req.logger.info(
+            "Extracted data: \(apiInfo)."
+        )
+
+        return ProcessedFileData(
+            info: extracted["info"] as? ApiInfo ?? ApiInfo(title: "Unknown", version: "1.0"),
+            endpoints: extracted["endpoints"] as? [Endpoint] ?? [],
+            filename: filename,
+            message: "File uploaded and parsed successfully"
+        )
     }
 
     private func saveFile(_ file: File, to path: String) throws {

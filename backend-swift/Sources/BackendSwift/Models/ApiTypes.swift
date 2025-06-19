@@ -1,4 +1,5 @@
 import Foundation
+import Vapor
 
 struct ApiInfo: Codable {
     var title: String?
@@ -71,11 +72,20 @@ struct ApiData: Codable {
     var filename: String?
 }
 
-struct ProcessedFileData: Codable {
+struct ProcessedFileData: Codable, AsyncResponseEncodable {
     var info: ApiInfo
     var endpoints: [Endpoint]
     var filename: String?
     var message: String?
+
+    func encodeResponse(for request: Vapor.Request) async throws -> Vapor.Response {
+        var headers = HTTPHeaders()
+        headers.add(name: .contentType, value: "application/json")
+        return .init(
+            status: .ok, headers: headers,
+            body: .init(data: try JSONEncoder().encode(self))
+        )
+    }
 }
 
 struct SpecToSave: Codable {
