@@ -2,7 +2,7 @@
 import PackageDescription
 
 let package = Package(
-    name: "BackendSwift",
+    name: "Backend",
     platforms: [
         .macOS(.v13)
     ],
@@ -20,7 +20,7 @@ let package = Package(
     ],
     targets: [
         .executableTarget(
-            name: "BackendSwift",
+            name: "Backend",
             dependencies: [
                 .product(name: "Fluent", package: "fluent"),
                 .product(name: "FluentSQLiteDriver", package: "fluent-sqlite-driver"),
@@ -32,9 +32,9 @@ let package = Package(
             swiftSettings: swiftSettings
         ),
         .testTarget(
-            name: "BackendSwiftTests",
+            name: "BackendTests",
             dependencies: [
-                .target(name: "BackendSwift"),
+                .target(name: "Backend"),
                 .product(name: "VaporTesting", package: "vapor"),
             ],
             swiftSettings: swiftSettings
