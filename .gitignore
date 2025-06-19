@@ -25,6 +25,19 @@ build/
 dist/
 app/uploads/
 
+# Swift / Vapor / XCode
+Packages
+.build
+xcuserdata
+*.xcodeproj
+DerivedData/
+.DS_Store
+db.sqlite
+.swiftpm
+.env
+.env.*
+!.env.example
+
 # Node / React / Vite / Tailwind / TypeScript
 node_modules/
 dist/
