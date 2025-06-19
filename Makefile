@@ -1,30 +1,31 @@
 # Unified Makefile (runs from root of the project)
-# Assumes Conda env: web, FastAPI backend in backend/, React frontend in frontend/
+# For React frontend in frontend/ and Vapor (Swift) backend in backend-swift/
 
-ENV_NAME=web
-
-.PHONY: create-conda-env install install-backend install-frontend dev run-backend run-frontend lint test format clean
+.PHONY: install install-backend install-frontend build-backend build-frontend run-backend run-frontend dev clean
 
 ## Setup
-
-create-conda-env:
-	@echo "🔧 Creating Conda environment..."
-	conda create -n $(ENV_NAME) python=3.11 -y
-	@echo "✅ Conda environment '$(ENV_NAME)' created."
 
 install: install-backend install-frontend
 	@echo "✅ All dependencies installed."
 
 install-backend:
-	conda run -n $(ENV_NAME) pip install -r backend/requirements.txt
+	cd backend-swift && swift package resolve
 
 install-frontend:
 	cd frontend && pnpm install
 
+## Build
+
+build-backend:
+	cd backend-swift && swift build -c release
+
+build-frontend:
+	cd frontend && pnpm build
+
 ## Run
 
 run-backend:
-	cd backend && conda run -n $(ENV_NAME) uvicorn app.main:app --reload --log-level debug
+	cd backend-swift && swift run
 
 run-frontend:
 	cd frontend && pnpm dev
@@ -32,24 +33,14 @@ run-frontend:
 dev:
 	@echo "🚀 Starting both backend and frontend..."
 	# Start frontend in background
-	cd frontend && conda run -n $(ENV_NAME) pnpm dev &
-	# Start backend with correct path
-	cd backend && conda run -n $(ENV_NAME) uvicorn app.main:app --reload
-
-## Quality
-
-lint:
-	conda run -n $(ENV_NAME) ruff backend
-
-format:
-	conda run -n $(ENV_NAME) black backend
-
-test:
-	conda run -n $(ENV_NAME) pytest backend/tests
+	cd frontend && pnpm dev &
+	# Start backend
+	cd backend-swift && swift run
 
 ## Utilities
 
 clean:
-	find . -type d -name "__pycache__" -exec rm -r {} +
-	find . -type d -name ".pytest_cache" -exec rm -r {} +
-	@echo "🧹 Cache and pycache cleaned."
+	cd backend-swift && swift package clean
+	cd frontend && pnpm clean || true
+	find . -type d -name "node_modules" -exec rm -rf {} +
+	@echo "🧹 Cleaned Swift, Node, and build artifacts."

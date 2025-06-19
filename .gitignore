@@ -1,6 +1,12 @@
 # macOS
 .DS_Store
 
+# Uploads used locally
+# This is a local directory for storing uploaded files, not tracked by git
+# It is used for development purposes and should not be included in the repository.
+Uploads/
+uploads/
+
 # Python / FastAPI
 __pycache__/
 *.py[cod]
@@ -23,7 +29,6 @@ instance/
 *.egg-info/
 build/
 dist/
-app/uploads/
 
 # Swift / Vapor / XCode
 Packages
