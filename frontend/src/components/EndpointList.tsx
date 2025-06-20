@@ -57,7 +57,7 @@ const EndpointList: React.FC<Props> = ({ endpoints, onSelect }) => {
                                 return (
                                     <div
                                         key={key}
-                                        className={`flex items-center p-2 rounded-md cursor-pointer transition-colors border-2 ${isSelected ? 'border-gray-200 bg-gray-100 dark:bg-gray-700' : 'border-transparent hover:bg-gray-50 dark:hover:bg-gray-700'}`}
+                                        className={`flex items-center p-2 rounded-md cursor-pointer transition-colors border ${isSelected ? 'border-blue-200 bg-blue-50 dark:bg-gray-700' : 'border-transparent hover:bg-gray-50 dark:hover:bg-gray-700'}`}
                                         onClick={() => handleSelect(endpoint, idx)}
                                     >
                                         <span className={`inline-flex items-center px-2.5 py-0.5 rounded-md text-xs font-medium mr-2 ${getMethodColor(endpoint.method)}`}>
