@@ -1,15 +1,14 @@
 # 📘 API DocGen – API Documentation Generator
 
-A SaaS tool to visually generate and host documentation from JSON/YAML OpenAPI specs. Built with FastAPI, React 19, and TailwindCSS. Optimized for solo developers and monorepo projects.
+A SaaS tool to visually generate and host documentation from JSON/YAML OpenAPI specs. Built with Swift (Vapor), React 19, and TailwindCSS. Optimized for solo developers and monorepo projects.
 
 ---
 
 ## 🧱 Tech Stack
 
-- **Backend**: FastAPI, Uvicorn, SQLite
+- **Backend**: Swift (Vapor), SQLite
 - **Frontend**: React 19 + Vite + TailwindCSS
-- **Environment**: Conda (`web`)
-- **Dev Tools**: pnpm, Ruff, Black, Pytest, pre-commit
+- **Dev Tools**: pnpm, ESLint, Prettier, Vitest, pre-commit
 - **Project Layout**: Monorepo
 
 ---
@@ -20,11 +19,10 @@ A SaaS tool to visually generate and host documentation from JSON/YAML OpenAPI s
 apiview/
 ├── backend/
 │   ├── app/
-│   │   ├── main.py
+│   │   ├── main.swift
 │   │   └── api/, models/
-│   ├── requirements.txt
-│   ├── requirements-dev.txt
-│   └── tests/
+│   ├── Package.swift
+│   └── Tests/
 ├── frontend/
 │   ├── src/
 │   ├── package.json
@@ -40,7 +38,7 @@ apiview/
 
 ### 🔧 Prerequisites
 
-- Python 3.10+ and Conda
+- Swift 5.4+ and Vapor
 - Node.js 18+
 - pnpm (`npm i -g pnpm`)
 
@@ -55,14 +53,7 @@ git clone https://github.com/your-user/api-docgen.git
 cd api-docgen
 ```
 
-2. Create and activate the Conda environment:
-
-```bash
-conda create -n web python=3.10
-conda activate web
-```
-
-3. Install all dependencies (backend and frontend):
+2. Install all dependencies (backend and frontend):
 
 ```bash
 make install
@@ -78,7 +69,7 @@ To run both backend and frontend in dev mode:
 make dev
 ```
 
-- Backend: <http://localhost:8000>
+- Backend: <http://localhost:8080>
 - Frontend: <http://localhost:5173>
 
 You can also run them separately:
@@ -92,34 +83,23 @@ make run-frontend
 
 ## 🧪 Testing & Code Quality
 
-- **Run tests** (Pytest):
+- **Run tests** (Vitest):
 
   ```bash
   make test
   ```
 
-- **Lint backend** (Ruff):
+- **Lint backend** (ESLint):
 
   ```bash
   make lint
   ```
 
-- **Format code** (Black):
+- **Format code** (Prettier):
 
   ```bash
   make format
   ```
-
----
-
-### 🪝 Pre-commit Hooks
-
-Install pre-commit hooks to auto-format and lint before commits:
-
-```bash
-pre-commit install
-pre-commit run --all-files
-```
 
 ---
 
