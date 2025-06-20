@@ -1,5 +1,6 @@
 import React from 'react';
 import type { ApiInfo } from '../types';
+import ReactMarkdown from 'react-markdown';
 
 interface ApiInfoProps {
     info: ApiInfo;
@@ -10,7 +11,7 @@ const ShowApiInfo: React.FC<ApiInfoProps> = ({ info }) => (
         <h1 id="api-title" className="text-2xl font-bold mb-2 text-gray-900 dark:text-gray-100">{info.title}</h1>
         <div id="api-version" className="text-sm text-gray-500 dark:text-gray-300 mb-2">{info.version && `v${info.version}`}</div>
         <div id="api-description" className="mb-2 text-gray-700 dark:text-gray-200">
-            <p>{info.description}</p>
+            <ReactMarkdown>{info.description || ''}</ReactMarkdown>
         </div>
     </div>
 );
