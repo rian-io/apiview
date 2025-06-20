@@ -54,6 +54,15 @@ struct OpenAPIService {
                 }
             }
         }
+
+        // Order endpoints by method according to validMethods
+        endpoints.sort { lhs, rhs in
+            let lhsIndex =
+                validMethods.firstIndex(of: lhs.method.rawValue.lowercased()) ?? validMethods.count
+            let rhsIndex =
+                validMethods.firstIndex(of: rhs.method.rawValue.lowercased()) ?? validMethods.count
+            return lhsIndex < rhsIndex
+        }
         return ["info": info, "endpoints": endpoints]
     }
 }
