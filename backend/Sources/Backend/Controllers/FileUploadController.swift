@@ -29,60 +29,7 @@ struct FileUploadController: RouteCollection {
         }
 
         let slug = String(UUID().uuidString.prefix(8))
-        let uploadsDirectory = req.application.directory.publicDirectory + "Uploads/"
-        let savePath = uploadsDirectory + slug + "." + ext
-
-        try saveFile(file, to: savePath)
-        try await saveDocument(filename: filename, filetype: ext, slug: slug, req: req)
-        let extracted = try extractInfoAndEndpoints(from: savePath)
-
-        req.logger.info("File \(filename) uploaded and processed successfully.")
-
-        req.logger.info("Info -- \(extracted["info"]!).")
-
-        let apiInfo = extracted["info"] as? ApiInfo ?? ApiInfo(title: "Unknown", version: "1.0")
-
-        req.logger.info(
-            "Extracted data: \(apiInfo)."
-        )
-
-        return ProcessedFileData(
-            info: extracted["info"] as? ApiInfo ?? ApiInfo(title: "Unknown", version: "1.0"),
-            endpoints: extracted["endpoints"] as? [Endpoint] ?? [],
-            filename: filename,
-            message: "File uploaded and parsed successfully"
-        )
-    }
-
-    private func saveFile(_ file: File, to path: String) throws {
-        // Ensure directory exists
-        let directory = (path as NSString).deletingLastPathComponent
-        try FileManager.default.createDirectory(
-            atPath: directory, withIntermediateDirectories: true)
-        let data = Data(buffer: file.data)
-        try data.write(to: URL(fileURLWithPath: path))
-    }
-
-    private func saveDocument(filename: String, filetype: String, slug: String, req: Request)
-        async throws
-    {
-        let doc = APIDocument(
-            filename: filename, filetype: filetype, slug: slug, uploadedAt: Date())
-        try await doc.save(on: req.db)
-    }
-
-    private func extractInfoAndEndpoints(from filePath: String) throws -> [String: Any] {
-        let url = URL(fileURLWithPath: filePath)
-        let data = try Data(contentsOf: url)
-        let ext = url.pathExtension.lowercased()
-        var spec: [String: Any] = [:]
-        if ext == "json" {
-            spec = try JSONSerialization.jsonObject(with: data) as? [String: Any] ?? [:]
-        } else if ext == "yaml" || ext == "yml" {
-            if let yamlString = String(data: data, encoding: .utf8) {
-                spec = try Yams.load(yaml: yamlString) as? [String: Any] ?? [:]
-            }
-        }
-        return OpenAPIService.extractEndpoints(from: spec)
+        return try await UploadService.processUpload(
+            file: file, filename: filename, ext: ext, slug: slug, req: req)
     }
 }

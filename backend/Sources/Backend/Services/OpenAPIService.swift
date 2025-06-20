@@ -1,7 +1,25 @@
 import Foundation
+import Yams
 
 struct OpenAPIService {
-    static func extractEndpoints(from spec: [String: Any]) -> [String: Any] {
+    static func extractInfoAndEndpoints(from filePath: String) throws -> [String: Any] {
+        let url = URL(fileURLWithPath: filePath)
+        let data = try Data(contentsOf: url)
+        let ext = url.pathExtension.lowercased()
+
+        var spec: [String: Any] = [:]
+
+        if ext == "json" {
+            spec = try JSONSerialization.jsonObject(with: data) as? [String: Any] ?? [:]
+        } else if ext == "yaml" || ext == "yml" {
+            if let yamlString = String(data: data, encoding: .utf8) {
+                spec = try Yams.load(yaml: yamlString) as? [String: Any] ?? [:]
+            }
+        }
+        return extractEndpoints(from: spec)
+    }
+
+    private static func extractEndpoints(from spec: [String: Any]) -> [String: Any] {
         // Extract info
         let infoDict = spec["info"] as? [String: Any] ?? [:]
         let info = ApiInfo(
