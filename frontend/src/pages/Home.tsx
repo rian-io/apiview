@@ -10,7 +10,7 @@ const App: React.FC = () => {
     };
 
     return (
-        <div className="flex justify-center items-center h-screen min-w-screen">
+        <div className="flex justify-center items-center h-screen min-w-screen bg-gray-50 dark:bg-gray-900 transition-colors duration-300">
             {apiData ? (
                 <ApiDetail data={apiData} />
             ) : (

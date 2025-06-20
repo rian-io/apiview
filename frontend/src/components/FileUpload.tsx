@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import type { DragEvent, ChangeEvent, FormEvent } from 'react';
 import type { ProcessedFileData } from '../types.ts';
@@ -102,22 +101,21 @@ const FileUpload: React.FC<FileUploadProps> = ({ onFileProcessed }) => {
   };
 
   return (
-    <div className="w-full max-w-2xl mx-auto p-6">
+    <div className="w-full max-w-2xl mx-auto p-6 bg-white dark:bg-gray-900 rounded-lg shadow-md transition-colors duration-300">
       <div className="mb-8 text-center">
-        <h1 className="text-3xl font-bold text-gray-800 mb-2">API Visualizer</h1>
-        <p className="text-gray-600">Upload your OpenAPI specification to visualize and test your API endpoints</p>
+        <h1 className="text-3xl font-bold text-gray-800 dark:text-gray-100 mb-2">API Visualizer</h1>
+        <p className="text-gray-600 dark:text-gray-300">Upload your OpenAPI specification to visualize and test your API endpoints</p>
       </div>
 
       <form onSubmit={handleSubmit}>
         <div
-          className={`border-2 border-dashed rounded-lg p-8 text-center ${dragActive ? 'border-blue-500 bg-blue-50' : 'border-gray-300'
-            } transition-all duration-200 ease-in-out`}
+          className={`border-2 border-dashed rounded-lg p-8 text-center ${dragActive ? 'border-blue-500 bg-blue-50 dark:bg-blue-900' : 'border-gray-300 dark:border-gray-600 dark:bg-gray-800'} transition-all duration-200 ease-in-out`}
           onDragOver={handleDragOver}
           onDragLeave={handleDragLeave}
           onDrop={handleDrop}
         >
           <div className="mb-4">
-            <svg className="mx-auto h-12 w-12 text-gray-400" stroke="currentColor" fill="none" viewBox="0 0 48 48" aria-hidden="true">
+            <svg className="mx-auto h-12 w-12 text-gray-400 dark:text-gray-500" stroke="currentColor" fill="none" viewBox="0 0 48 48" aria-hidden="true">
               <path
                 d="M28 8H12a4 4 0 00-4 4v20m32-12v8m0 0v8a4 4 0 01-4 4H12a4 4 0 01-4-4v-4m32-4l-3.172-3.172a4 4 0 00-5.656 0L28 28M8 32l9.172-9.172a4 4 0 015.656 0L28 28m0 0l4 4m4-24h8m-4-4v8m-12 4h.02"
                 strokeWidth={2}
@@ -125,12 +123,12 @@ const FileUpload: React.FC<FileUploadProps> = ({ onFileProcessed }) => {
                 strokeLinejoin="round"
               />
             </svg>
-            <p className="mt-1 text-sm text-gray-600">
+            <p className="mt-1 text-sm text-gray-600 dark:text-gray-300">
               Drag and drop your OpenAPI file here, or
             </p>
             <label
               htmlFor="file-upload"
-              className="relative cursor-pointer rounded-md font-medium text-blue-600 hover:text-blue-500 focus-within:outline-none"
+              className="relative cursor-pointer rounded-md font-medium text-blue-600 dark:text-blue-400 hover:text-blue-500 dark:hover:text-blue-300 focus-within:outline-none"
             >
               <span>browse to upload</span>
               <input
@@ -145,7 +143,7 @@ const FileUpload: React.FC<FileUploadProps> = ({ onFileProcessed }) => {
           </div>
 
           {file && (
-            <div className="mt-2 flex items-center justify-center text-sm text-gray-600">
+            <div className="mt-2 flex items-center justify-center text-sm text-gray-600 dark:text-gray-200">
               <svg className="h-5 w-5 text-green-500 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"></path>
               </svg>
@@ -154,7 +152,7 @@ const FileUpload: React.FC<FileUploadProps> = ({ onFileProcessed }) => {
           )}
 
           {error && (
-            <div className="mt-2 text-sm text-red-600">
+            <div className="mt-2 text-sm text-red-600 dark:text-red-400">
               {error}
             </div>
           )}
@@ -164,8 +162,14 @@ const FileUpload: React.FC<FileUploadProps> = ({ onFileProcessed }) => {
           <button
             type="submit"
             disabled={!file || isUploading}
-            className={`w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white ${!file || isUploading ? 'bg-gray-400 cursor-not-allowed' : 'bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500'
-              }`}
+            className={
+              [
+                'w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white',
+                (!file || isUploading)
+                  ? 'bg-gray-400 dark:bg-gray-700 cursor-not-allowed'
+                  : 'bg-blue-600 dark:bg-blue-700 hover:bg-blue-700 dark:hover:bg-blue-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 dark:focus:ring-offset-gray-900'
+              ].join(' ')
+            }
           >
             {isUploading ? (
               <>
