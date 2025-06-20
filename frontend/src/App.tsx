@@ -8,6 +8,7 @@ export default function App() {
       <Routes>
         {/* Outras rotas aqui, como <Route path="/" element={<Home />} /> */}
         <Route path="/" element={<Home />} />
+        {/* Rota para a página de saúde */}
         <Route path="/health" element={<Health />} />
       </Routes>
     </BrowserRouter>
