@@ -9,7 +9,7 @@ interface ApiDetailProps {
 }
 
 const ApiDetail: React.FC<ApiDetailProps> = ({ data }) => {
-    const [selected, setSelected] = useState<Endpoint | null>(data.endpoints[0] || null);
+    const [selected, setSelected] = useState<Endpoint | null>(null);
 
     return (
         <div className="container mx-auto py-6">
@@ -19,7 +19,7 @@ const ApiDetail: React.FC<ApiDetailProps> = ({ data }) => {
                     <EndpointList endpoints={data.endpoints} onSelect={setSelected} />
                 </div>
                 <div className="flex-1">
-                    {selected && <EndpointDetail endpoint={selected} />}
+                    <EndpointDetail endpoint={selected} />
                 </div>
             </div>
         </div>

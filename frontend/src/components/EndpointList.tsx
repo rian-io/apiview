@@ -25,15 +25,10 @@ const EndpointList: React.FC<Props> = ({ endpoints, onSelect }) => {
         return acc;
     }, {});
 
-    // Select the first endpoint by default on mount or when endpoints change
+    // Não seleciona nenhum endpoint por padrão
     useEffect(() => {
-        if (endpoints.length > 0) {
-            const first = endpoints[0];
-            const firstKey = first.method + first.path + '0';
-            setSelectedKey(firstKey);
-            onSelect(first);
-        }
-    }, [endpoints, onSelect]);
+        setSelectedKey(null);
+    }, [endpoints]);
 
     const handleSelect = (endpoint: Endpoint, idx: number) => {
         setSelectedKey(endpoint.method + endpoint.path + idx);
