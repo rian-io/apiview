@@ -4,6 +4,8 @@ export interface ApiInfo {
   title?: string;
   version?: string;
   description?: string;
+  slug?: string; // Added for file identification
+  uploadedAt?: string; // Added for file upload timestamp
 }
 
 export interface Parameter {
@@ -27,7 +29,7 @@ export interface RequestBody {
   content?: RequestBodyContent;
 }
 
-export interface ResponseContent extends RequestBodyContent {}
+export interface ResponseContent extends RequestBodyContent { }
 
 export interface Response {
   description: string;
@@ -64,34 +66,34 @@ export interface ProcessedFileData extends ApiData {
 
 // Type for the data structure used in handleSaveAndShare in App.tsx
 export interface SpecToSave {
-    info: ApiInfo;
-    paths: {
-        [path: string]: {
-            [method: string]: {
-                summary?: string;
-                description?: string;
-                operationId?: string;
-                parameters?: Parameter[];
-                responses?: Responses;
-                requestBody?: RequestBody;
-            }
-        }
-    };
+  info: ApiInfo;
+  paths: {
+    [path: string]: {
+      [method: string]: {
+        summary?: string;
+        description?: string;
+        operationId?: string;
+        parameters?: Parameter[];
+        responses?: Responses;
+        requestBody?: RequestBody;
+      }
+    }
+  };
 }
 
 // Type for the save API response in App.tsx
 export interface SaveApiResponse {
-    id: string;
-    title: string;
-    link: string;
-    expires_at: string;
-    message: string;
+  id: string;
+  title: string;
+  link: string;
+  expires_at: string;
+  message: string;
 }
 
 // Type for the proxy API response in TestPanel.tsx
 export interface ProxyResponse {
-    status: number;
-    statusText: string;
-    headers: { [key: string]: string };
-    data: any; // Response data can be anything
+  status: number;
+  statusText: string;
+  headers: { [key: string]: string };
+  data: any; // Response data can be anything
 }

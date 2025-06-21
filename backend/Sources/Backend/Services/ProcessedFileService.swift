@@ -71,7 +71,9 @@ struct ProcessedFileService {
             }
 
             let extracted = try OpenAPIService.extractInfoAndEndpoints(from: filePath)
-            if let info = extracted["info"] as? ApiInfo {
+            if var info = extracted["info"] as? ApiInfo {
+                info.slug = document.slug
+                info.uploadedAt = document.uploadedAt
                 apiInfos.append(info)
             }
         }

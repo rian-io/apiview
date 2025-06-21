@@ -46,6 +46,12 @@ const ApiDetail: React.FC = () => {
 
     return (
         <div className="container mx-auto py-6">
+            <button
+                className="mb-6 px-4 py-2 bg-blue-600 text-white rounded shadow hover:bg-blue-700 transition-colors duration-200"
+                onClick={() => window.location.href = '/'}
+            >
+                ← Back to Home
+            </button>
             <ShowApiInfo info={data.info} />
             <div className="flex gap-8">
                 <div className="w-1/3">

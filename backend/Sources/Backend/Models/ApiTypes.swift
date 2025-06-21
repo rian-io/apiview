@@ -16,6 +16,8 @@ struct ApiInfo: Codable, Content {
     var title: String?
     var version: String?
     var description: String?
+    var slug: String?
+    var uploadedAt: Date?
 }
 
 struct Parameter: Codable {
