@@ -1,12 +1,7 @@
 import React, { useState } from 'react';
 import type { DragEvent, ChangeEvent, FormEvent } from 'react';
-import type { ProcessedFileData } from '../types.ts';
 
-interface FileUploadProps {
-  onFileProcessed: (data: ProcessedFileData) => void;
-}
-
-const FileUpload: React.FC<FileUploadProps> = ({ onFileProcessed }) => {
+const FileUpload: React.FC<{}> = () => {
   const [file, setFile] = useState<File | null>(null);
   const [isUploading, setIsUploading] = useState<boolean>(false);
   const [error, setError] = useState<string>('');
@@ -87,10 +82,9 @@ const FileUpload: React.FC<FileUploadProps> = ({ onFileProcessed }) => {
         throw new Error(errorMessage);
       }
 
-      const data: ProcessedFileData = await response.json();
-
-      if (data && data.endpoints) {
-        onFileProcessed(data);
+      const slug = await response.text();
+      if (slug) {
+        window.location.href = `/view/${slug}`;
       }
     } catch (err: any) {
       console.error('Upload error:', err);

@@ -15,7 +15,7 @@ public func configure(_ app: Application) async throws {
     app.migrations.add(CreateAPIDocument())
 
     // Configure the routes
-    app.routes.defaultMaxBodySize = "10mb"
+    app.routes.defaultMaxBodySize = "100kb"
 
     // Register routes
     try routes(app)

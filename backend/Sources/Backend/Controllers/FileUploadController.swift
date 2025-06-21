@@ -8,7 +8,7 @@ struct FileUploadController: RouteCollection {
     }
 
     @Sendable
-    func upload(req: Request) async throws -> ProcessedFileData {
+    func upload(req: Request) async throws -> String {
         // Ensure the request contains a file upload
         guard req.content.contentType == .formData else {
             throw Abort(.badRequest, reason: "Content type must be multipart/form-data")
@@ -29,7 +29,13 @@ struct FileUploadController: RouteCollection {
         }
 
         let slug = String(UUID().uuidString.prefix(8))
-        return try await UploadService.processUpload(
+        let success = try await UploadService.processUpload(
             file: file, filename: filename, ext: ext, slug: slug, req: req)
+
+        if success {
+            return slug
+        } else {
+            throw Abort(.internalServerError, reason: "File upload failed.")
+        }
     }
 }

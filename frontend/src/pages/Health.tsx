@@ -10,7 +10,7 @@ export default function Health() {
     }, []);
 
     return (
-        <div className="flex justify-center items-center h-screen min-w-screen bg-gray-50 dark:bg-gray-900  ">
+        <div className="flex justify-center items-center h-screen min-w-screen">
             {status === 'checking' && <p className="text-blue-500">Checking...</p>}
             {status === 'ok' && <p className="text-green-600 font-bold">✅ Backend OK</p>}
             {status === 'fail' && <p className="text-red-600 font-bold">❌ Backend FAIL</p>}

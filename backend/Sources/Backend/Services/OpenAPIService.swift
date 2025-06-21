@@ -27,14 +27,18 @@ struct OpenAPIService {
             version: infoDict["version"] as? String,
             description: infoDict["description"] as? String
         )
+
         // Extract endpoints
         var endpoints: [Endpoint] = []
         guard let paths = spec["paths"] as? [String: Any] else {
             return ["info": info, "endpoints": endpoints]
         }
+
         let validMethods = ["get", "post", "put", "delete", "patch", "options", "head"]
+
         for (path, pathItem) in paths {
             guard let pathItemDict = pathItem as? [String: Any] else { continue }
+
             for (method, operation) in pathItemDict {
                 if validMethods.contains(method.lowercased()),
                     let operationDict = operation as? [String: Any]
@@ -63,6 +67,7 @@ struct OpenAPIService {
                 validMethods.firstIndex(of: rhs.method.rawValue.lowercased()) ?? validMethods.count
             return lhsIndex < rhsIndex
         }
+
         return ["info": info, "endpoints": endpoints]
     }
 }

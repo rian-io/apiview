@@ -3,7 +3,7 @@ import Yams
 
 struct UploadService {
     static func processUpload(file: File, filename: String, ext: String, slug: String, req: Request)
-        async throws -> ProcessedFileData
+        async throws -> Bool
     {
         let uploadsDirectory = req.application.directory.publicDirectory + "Uploads/"
         let savePath = uploadsDirectory + slug + "." + ext
@@ -11,11 +11,34 @@ struct UploadService {
         try saveFile(file, to: savePath)
         try await saveDocument(filename: filename, filetype: ext, slug: slug, req: req)
 
-        let extracted = try OpenAPIService.extractInfoAndEndpoints(from: savePath)
+        return true
+    }
+
+    static func getProcessedFileDataBySlug(_ slug: String, req: Request) async throws
+        -> ProcessedFileData
+    {
+        guard
+            let apiDocumentRecord = try? await APIDocument.query(on: req.db)
+                .filter(\.$slug, .equal, slug)
+                .first()
+        else {
+            throw Abort(.notFound, reason: "File not found")
+        }
+
+        let fileName = apiDocumentRecord.slug + "." + apiDocumentRecord.filetype
+        let uploadsDirectory = req.application.directory.publicDirectory + "Uploads/"
+        let filePath = uploadsDirectory + fileName
+
+        guard FileManager.default.fileExists(atPath: filePath) else {
+            throw Abort(.notFound, reason: "File \(fileName) not found")
+        }
+
+        let extracted = try OpenAPIService.extractInfoAndEndpoints(from: filePath)
+
         return ProcessedFileData(
             info: extracted["info"] as? ApiInfo ?? ApiInfo(title: "Unknown", version: "1.0"),
             endpoints: extracted["endpoints"] as? [Endpoint] ?? [],
-            filename: filename,
+            filename: fileName,
             message: "OK"
         )
     }

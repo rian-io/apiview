@@ -1,17 +1,21 @@
 import Foundation
 import Vapor
 
-struct ApiInfo: Codable {
-    var title: String?
-    var version: String?
-    var description: String?
-}
-
 enum ParameterLocation: String, Codable {
     case path
     case query
     case header
     case cookie
+}
+
+enum HttpMethod: String, Codable {
+    case GET, POST, PUT, DELETE, PATCH, OPTIONS, HEAD
+}
+
+struct ApiInfo: Codable {
+    var title: String?
+    var version: String?
+    var description: String?
 }
 
 struct Parameter: Codable {
@@ -48,10 +52,6 @@ struct Response: Codable {
 
 struct Responses: Codable {
     var statusCode: [String: Response]
-}
-
-enum HttpMethod: String, Codable {
-    case GET, POST, PUT, DELETE, PATCH, OPTIONS, HEAD
 }
 
 struct Endpoint: Codable {
