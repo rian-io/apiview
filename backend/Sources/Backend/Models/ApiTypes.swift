@@ -12,7 +12,7 @@ enum HttpMethod: String, Codable {
     case GET, POST, PUT, DELETE, PATCH, OPTIONS, HEAD
 }
 
-struct ApiInfo: Codable {
+struct ApiInfo: Codable, Content {
     var title: String?
     var version: String?
     var description: String?

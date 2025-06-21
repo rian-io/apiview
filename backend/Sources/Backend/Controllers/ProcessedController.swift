@@ -1,8 +1,9 @@
 import Vapor
 
-struct DetailsController: RouteCollection {
+struct ProcessedController: RouteCollection {
     func boot(routes: any RoutesBuilder) throws {
         let details = routes.grouped("view")
+        details.get(use: self.getAllInfo)
         details.get(":slug", use: self.getDetails)
     }
 
@@ -24,6 +25,11 @@ struct DetailsController: RouteCollection {
             )
         }
 
-        return try await UploadService.getProcessedFileDataBySlug(slug, req: req)
+        return try await ProcessedFileService.getProcessedFileDataBySlug(slug, req: req)
+    }
+
+    @Sendable
+    func getAllInfo(req: Request) async throws -> [ApiInfo] {
+        return try await ProcessedFileService.getAllInfo(req: req)
     }
 }

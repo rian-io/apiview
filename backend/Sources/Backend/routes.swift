@@ -11,5 +11,5 @@ func routes(_ app: Application) throws {
     // Register controllers with the api group
     try apiV1.register(collection: HealthController())
     try apiV1.register(collection: FileUploadController())
-    try apiV1.register(collection: DetailsController())
+    try apiV1.register(collection: ProcessedController())
 }
