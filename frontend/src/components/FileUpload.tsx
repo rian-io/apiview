@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import type { DragEvent, ChangeEvent, FormEvent } from 'react';
+import { uploadApiFile } from '../services/ApiService';
 
 const FileUpload: React.FC<{}> = () => {
   const [file, setFile] = useState<File | null>(null);
@@ -61,28 +62,8 @@ const FileUpload: React.FC<{}> = () => {
     setIsUploading(true);
     setError('');
 
-    const formData = new FormData();
-    formData.append('file', file);
-
     try {
-      const response = await fetch('api/v1/upload', {
-        method: 'POST',
-        body: formData,
-      });
-
-      if (!response.ok) {
-        // Tenta extrair mensagem de erro do backend
-        let errorMessage = 'Error uploading file. Please try again.';
-        try {
-          const errorData = await response.json();
-          errorMessage = errorData.detail || errorMessage;
-        } catch {
-          // Se não for JSON, mantém mensagem padrão
-        }
-        throw new Error(errorMessage);
-      }
-
-      const slug = await response.text();
+      const slug = await uploadApiFile(file);
       if (slug) {
         window.location.href = `/view/${slug}`;
       }

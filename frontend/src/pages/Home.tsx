@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import FileUpload from "../components/FileUpload";
 import type { ApiInfo } from "../types";
+import { fetchApiInfos } from "../services/ApiService";
 
 const App: React.FC = () => {
     const [showModal, setShowModal] = useState(false);
@@ -9,12 +10,8 @@ const App: React.FC = () => {
     const [error, setError] = useState<string | null>(null);
 
     useEffect(() => {
-        fetch("/api/v1/view")
-            .then(async (res) => {
-                if (!res.ok) throw new Error(await res.text() || "Failed to load files");
-                return res.json();
-            })
-            .then((data: ApiInfo[]) => {
+        fetchApiInfos()
+            .then((data) => {
                 setFiles(data);
                 setError(null);
             })

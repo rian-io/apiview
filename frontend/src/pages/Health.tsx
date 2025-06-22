@@ -1,11 +1,12 @@
 import { useEffect, useState } from 'react';
+import { checkHealth } from '../services/ApiService';
 
 export default function Health() {
     const [status, setStatus] = useState<'checking' | 'ok' | 'fail'>('checking');
 
     useEffect(() => {
-        fetch('api/v1/health')
-            .then(res => res.ok ? setStatus('ok') : setStatus('fail'))
+        checkHealth()
+            .then((ok) => setStatus(ok ? 'ok' : 'fail'))
             .catch(() => setStatus('fail'));
     }, []);
 

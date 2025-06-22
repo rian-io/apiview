@@ -4,6 +4,7 @@ import type { ProcessedFileData, Endpoint } from '../types';
 import ShowApiInfo from '../components/ApiInfo';
 import EndpointList from '../components/EndpointList';
 import EndpointDetail from '../components/EndpointDetail';
+import { fetchProcessedFileData } from '../services/ApiService';
 
 const ApiDetail: React.FC = () => {
     const { slug } = useParams<{ slug: string }>();
@@ -16,15 +17,8 @@ const ApiDetail: React.FC = () => {
         if (!slug) return;
         setLoading(true);
         setError(null);
-        fetch(`/api/v1/view/${slug}`)
-            .then(async (res) => {
-                if (!res.ok) {
-                    const err = await res.text();
-                    throw new Error(err || 'Failed to load API details');
-                }
-                return res.json();
-            })
-            .then((json: ProcessedFileData) => {
+        fetchProcessedFileData(slug)
+            .then((json) => {
                 setData(json);
                 setSelected(null);
             })
