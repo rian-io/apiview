@@ -4,7 +4,7 @@ import type { ApiInfo, ProcessedFileData } from '../types';
 const API_BASE_URL = '/api/v1';
 
 export async function fetchApiInfos(): Promise<ApiInfo[]> {
-    const res = await fetch(API_BASE_URL + `${API_BASE_URL}/view`);
+    const res = await fetch(`${API_BASE_URL}/view`);
     if (!res.ok) throw new Error(await res.text() || 'Failed to load files');
     return res.json();
 }
