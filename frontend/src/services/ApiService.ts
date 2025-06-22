@@ -1,14 +1,16 @@
 // src/services/ApiService.ts
 import type { ApiInfo, ProcessedFileData } from '../types';
 
+const API_BASE_URL = '/api/v1';
+
 export async function fetchApiInfos(): Promise<ApiInfo[]> {
-    const res = await fetch('/api/v1/view');
+    const res = await fetch(API_BASE_URL + `${API_BASE_URL}/view`);
     if (!res.ok) throw new Error(await res.text() || 'Failed to load files');
     return res.json();
 }
 
 export async function fetchProcessedFileData(slug: string): Promise<ProcessedFileData> {
-    const res = await fetch(`/api/v1/view/${slug}`);
+    const res = await fetch(`${API_BASE_URL}/view/${slug}`);
     if (!res.ok) throw new Error(await res.text() || 'Failed to load API details');
     return res.json();
 }
@@ -16,7 +18,7 @@ export async function fetchProcessedFileData(slug: string): Promise<ProcessedFil
 export async function uploadApiFile(file: File): Promise<string> {
     const formData = new FormData();
     formData.append('file', file);
-    const response = await fetch('api/v1/upload', {
+    const response = await fetch(`${API_BASE_URL}/upload`, {
         method: 'POST',
         body: formData,
     });
@@ -33,7 +35,7 @@ export async function uploadApiFile(file: File): Promise<string> {
 
 export async function checkHealth(): Promise<boolean> {
     try {
-        const res = await fetch('api/v1/health');
+        const res = await fetch(`${API_BASE_URL}/health`);
         return res.ok;
     } catch {
         return false;
