@@ -4,13 +4,8 @@ struct ProcessedFileService {
     static func getProcessedFileDataBySlug(_ slug: String, req: Request) async throws
         -> ProcessedFileData
     {
-        guard
-            let apiDocumentRecord = try? await APIDocument.query(on: req.db)
-                .filter(\.$slug, .equal, slug)
-                .first()
-        else {
-            throw Abort(.notFound, reason: "File not found")
-        }
+        let apiDocumentRecord = try! await APIDocumentRepository.getAPIDocumentBySlug(
+            slug, db: req.db)
 
         let fileName = apiDocumentRecord.slug + "." + apiDocumentRecord.filetype
         let uploadsDirectory = req.application.directory.publicDirectory + "Uploads/"
@@ -31,13 +26,8 @@ struct ProcessedFileService {
     }
 
     static func getApiInfoBySlug(_ slug: String, req: Request) async throws -> ApiInfo {
-        guard
-            let apiDocumentRecord = try? await APIDocument.query(on: req.db)
-                .filter(\.$slug, .equal, slug)
-                .first()
-        else {
-            throw Abort(.notFound, reason: "File not found")
-        }
+        let apiDocumentRecord = try! await APIDocumentRepository.getAPIDocumentBySlug(
+            slug, db: req.db)
 
         let fileName = apiDocumentRecord.slug + "." + apiDocumentRecord.filetype
         let uploadsDirectory = req.application.directory.publicDirectory + "Uploads/"
@@ -53,7 +43,7 @@ struct ProcessedFileService {
     }
 
     static func getAllInfo(req: Request) async throws -> [ApiInfo] {
-        let apiDocuments = try await APIDocument.query(on: req.db).all()
+        let apiDocuments = await APIDocumentRepository.getAllAPIDocuments(db: req.db)
 
         guard !apiDocuments.isEmpty else {
             throw Abort(.notFound, reason: "No API documents found")
