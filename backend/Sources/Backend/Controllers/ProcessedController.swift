@@ -17,7 +17,7 @@ struct ProcessedController: RouteCollection {
 
         // Validate slug format: alphanumeric only and length equal to 8
         let slugRegex = "^[a-zA-Z0-9]{8}$"
-        guard NSPredicate(format: "SELF MATCHES %@", slugRegex).evaluate(with: slug) else {
+        guard slug.range(of: slugRegex, options: .regularExpression) != nil else {
             throw Abort(
                 .badRequest,
                 reason:
