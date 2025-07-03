@@ -57,7 +57,7 @@ struct ProcessedFileService {
             let filePath = uploadsDirectory + fileName
 
             guard FileManager.default.fileExists(atPath: filePath) else {
-                throw Abort(.notFound, reason: "File \(fileName) not found")
+                continue
             }
 
             let extracted = try OpenAPIService.extractInfoAndEndpoints(from: filePath)
