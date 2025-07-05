@@ -2,7 +2,7 @@ import Vapor
 import Yams
 
 struct UploadService {
-    static func processUpload(file: File, filename: String, ext: String, slug: String, req: Request)
+    func processUpload(file: File, filename: String, ext: String, slug: String, req: Request)
         async throws -> Bool
     {
         let uploadsDirectory = req.application.directory.publicDirectory + "Uploads/"
@@ -14,7 +14,7 @@ struct UploadService {
         return true
     }
 
-    private static func saveFile(_ file: File, to path: String) throws {
+    private func saveFile(_ file: File, to path: String) throws {
         let directory = (path as NSString).deletingLastPathComponent
         try FileManager.default.createDirectory(
             atPath: directory, withIntermediateDirectories: true)
@@ -22,7 +22,7 @@ struct UploadService {
         try data.write(to: URL(fileURLWithPath: path))
     }
 
-    private static func saveDocument(filename: String, filetype: String, slug: String, req: Request)
+    private func saveDocument(filename: String, filetype: String, slug: String, req: Request)
         async throws
     {
         let doc = APIDocument(

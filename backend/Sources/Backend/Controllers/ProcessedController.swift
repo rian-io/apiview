@@ -25,11 +25,14 @@ struct ProcessedController: RouteCollection {
             )
         }
 
-        return try await ProcessedFileService.getProcessedFileDataBySlug(slug, req: req)
+        // Usa a instância registrada no Application
+        return try await req.application.processedFileService.getProcessedFileDataBySlug(
+            slug, req: req)
     }
 
     @Sendable
     func getAllInfo(req: Request) async throws -> [ApiInfo] {
-        return try await ProcessedFileService.getAllInfo(req: req)
+        // Usa a instância registrada no Application
+        return try await req.application.processedFileService.getAllInfo(req: req)
     }
 }

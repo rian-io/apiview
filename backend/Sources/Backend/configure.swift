@@ -17,6 +17,14 @@ public func configure(_ app: Application) async throws {
     // Configure the routes
     app.routes.defaultMaxBodySize = "100kb"
 
+    // Registro dos serviços para injeção de dependência
+    app.processedFileService = ProcessedFileService()
+    app.openAPIService = OpenAPIService()
+    app.uploadService = UploadService()
+
+    // Registro do repositório para injeção de dependência
+    app.apiDocumentRepository = APIDocumentRepository()
+
     // Register routes
     try routes(app)
 }

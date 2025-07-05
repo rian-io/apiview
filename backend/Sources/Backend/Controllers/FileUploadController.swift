@@ -29,7 +29,7 @@ struct FileUploadController: RouteCollection {
         }
 
         let slug = String(UUID().uuidString.prefix(8))
-        let success = try await UploadService.processUpload(
+        let success = try await req.application.uploadService.processUpload(
             file: file, filename: filename, ext: ext, slug: slug, req: req)
 
         if success {

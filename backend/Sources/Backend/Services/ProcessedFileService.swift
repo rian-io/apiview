@@ -1,11 +1,11 @@
 import Vapor
 
 struct ProcessedFileService {
-    static func getProcessedFileDataBySlug(_ slug: String, req: Request) async throws
-        -> ProcessedFileData
+    func getProcessedFileDataBySlug(_ slug: String, req: Request) async throws -> ProcessedFileData
     {
-        let apiDocumentRecord = try! await APIDocumentRepository.getAPIDocumentBySlug(
-            slug, db: req.db)
+        let apiDocumentRecord = try! await req.application.apiDocumentRepository
+            .getAPIDocumentBySlug(
+                slug, db: req.db)
 
         let fileName = apiDocumentRecord.slug + "." + apiDocumentRecord.filetype
         let uploadsDirectory = req.application.directory.publicDirectory + "Uploads/"
@@ -15,7 +15,7 @@ struct ProcessedFileService {
             throw Abort(.notFound, reason: "File \(fileName) not found")
         }
 
-        let extracted = try OpenAPIService.extractInfoAndEndpoints(from: filePath)
+        let extracted = try req.application.openAPIService.extractInfoAndEndpoints(from: filePath)
 
         return ProcessedFileData(
             info: extracted["info"] as? ApiInfo ?? ApiInfo(title: "Unknown", version: "1.0"),
@@ -25,9 +25,10 @@ struct ProcessedFileService {
         )
     }
 
-    static func getApiInfoBySlug(_ slug: String, req: Request) async throws -> ApiInfo {
-        let apiDocumentRecord = try! await APIDocumentRepository.getAPIDocumentBySlug(
-            slug, db: req.db)
+    func getApiInfoBySlug(_ slug: String, req: Request) async throws -> ApiInfo {
+        let apiDocumentRecord = try! await req.application.apiDocumentRepository
+            .getAPIDocumentBySlug(
+                slug, db: req.db)
 
         let fileName = apiDocumentRecord.slug + "." + apiDocumentRecord.filetype
         let uploadsDirectory = req.application.directory.publicDirectory + "Uploads/"
@@ -37,13 +38,14 @@ struct ProcessedFileService {
             throw Abort(.notFound, reason: "File \(fileName) not found")
         }
 
-        let extracted = try OpenAPIService.extractInfoAndEndpoints(from: filePath)
+        let extracted = try req.application.openAPIService.extractInfoAndEndpoints(from: filePath)
 
         return extracted["info"] as? ApiInfo ?? ApiInfo(title: "Unknown", version: "1.0")
     }
 
-    static func getAllInfo(req: Request) async throws -> [ApiInfo] {
-        let apiDocuments = await APIDocumentRepository.getAllAPIDocuments(db: req.db)
+    func getAllInfo(req: Request) async throws -> [ApiInfo] {
+        let apiDocuments = await req.application.apiDocumentRepository.getAllAPIDocuments(
+            db: req.db)
 
         guard !apiDocuments.isEmpty else {
             throw Abort(.notFound, reason: "No API documents found")
@@ -60,12 +62,8 @@ struct ProcessedFileService {
                 continue
             }
 
-            let extracted = try OpenAPIService.extractInfoAndEndpoints(from: filePath)
-            if var info = extracted["info"] as? ApiInfo {
-                info.slug = document.slug
-                info.uploadedAt = document.uploadedAt
-                apiInfos.append(info)
-            }
+            let extracted = req.application.openAPIService.extractInfo(from: filePath)
+            apiInfos.append(extracted)
         }
 
         return apiInfos
