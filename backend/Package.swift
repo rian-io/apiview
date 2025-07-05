@@ -15,8 +15,10 @@ let package = Package(
         .package(url: "https://github.com/vapor/fluent-sqlite-driver.git", from: "4.6.0"),
         // 🔵 Non-blocking, event-driven networking for Swift. Used for custom executors
         .package(url: "https://github.com/apple/swift-nio.git", from: "2.65.0"),
-        // YAMS - Yet Another YAML parser for Swift, used for configuration files
+        // 📄 YAMS - Yet Another YAML parser for Swift, used for configuration files
         .package(url: "https://github.com/jpsim/Yams.git", from: "5.0.0"),
+        // 🔒 JWT implementation to controll user session
+        .package(url: "https://github.com/vapor/jwt.git", from: "5.0.0"),
     ],
     targets: [
         .executableTarget(
@@ -28,6 +30,7 @@ let package = Package(
                 .product(name: "NIOCore", package: "swift-nio"),
                 .product(name: "NIOPosix", package: "swift-nio"),
                 .product(name: "Yams", package: "Yams"),
+                .product(name: "JWT", package: "jwt"),
             ],
             swiftSettings: swiftSettings
         ),
