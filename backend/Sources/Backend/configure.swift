@@ -1,6 +1,5 @@
 import Fluent
 import FluentSQLiteDriver
-import NIOSSL
 import Vapor
 
 // configures your application
